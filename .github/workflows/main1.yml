@@ -1,4 +1,4 @@
-name: Hugging Face Space Keepalive
+name: Hugging Face 保活
 
 # 每 30 分钟触发一次（可自定义）
 on:
