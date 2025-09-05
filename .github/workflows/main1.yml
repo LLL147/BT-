@@ -1,0 +1,22 @@
+name: Hugging Face Space Keepalive
+
+# 每 30 分钟触发一次（可自定义）
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # 手动触发
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keepalive request
+        run: |
+          URL="${{ secrets.HF_SPACE_URL }}"
+          if [ -z "$URL" ]; then
+            echo "❌ HF_SPACE_URL 未设置，请在仓库 Secrets 中添加"
+            exit 1
+          fi
+          echo "⏱ $(date) Pinging $URL"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || echo "000")
+          echo "✅ Status code: $STATUS"
